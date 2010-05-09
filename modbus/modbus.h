@@ -230,8 +230,18 @@ int read_coil_status(modbus_param_t *mb_param, int start_addr, int nb,
 int read_input_status(modbus_param_t *mb_param, int start_addr, int nb,
                       uint8_t *dest);
 
-/* Reads the holding registers in a slave and put the data into an
-   array */
+/**
+ * read_holding_registers:
+ * @mb_param: The connection parameters #modbus_param_t
+ * @start_addr: the start address to be read
+ * @nb: number of bytes to read
+ * @dest: destination array
+ *
+ * Reads the holding registers in a slave and put the data into an
+ * array.
+ *
+ * Returns: The number of bits or words if success (>0) or an error exception (<0).
+ */
 int read_holding_registers(modbus_param_t *mb_param, int start_addr, int nb,
                            uint16_t *dest);
 
@@ -268,118 +278,243 @@ void modbus_init_rtu(modbus_param_t *mb_param, const char *device,
                      int baud, const char *parity, int data_bit,
                      int stop_bit, int slave);
 
-/* Initializes the modbus_param_t structure for TCP.
-   - ip: "192.168.0.5"
-   - port: 1099
-   - slave: 5
-
-   Set the port to MODBUS_TCP_DEFAULT_PORT to use the default one
-   (502). It's convenient to use a port number greater than or equal
-   to 1024 because it's not necessary to be root to use this port
-   number.
-*/
+/**
+ * modbus_init_tcp:
+ * @mb_param:
+ * @ip_address:
+ * @port:
+ * @slave:
+ *
+ *Initializes the modbus_param_t structure for TCP.
+ * - ip: "192.168.0.5"
+ * - port: 1099
+ * - slave: 5
+ *
+ * Set the port to MODBUS_TCP_DEFAULT_PORT to use the default one
+ * (502). It's convenient to use a port number greater than or equal
+ * to 1024 because it's not necessary to be root to use this port
+ * number.
+ */
 void modbus_init_tcp(modbus_param_t *mb_param, const char *ip_address, int port,
                      int slave);
 
-/* Define the slave number.
-   The special value MODBUS_BROADCAST_ADDRESS can be used. */
+/**
+ * modbus_set_slave:
+ * @mb_param:
+ * @slave: The slave address.
+ *
+ * Define the slave number.
+ * The special value MODBUS_BROADCAST_ADDRESS can be used.
+ */
 void modbus_set_slave(modbus_param_t *mb_param, int slave);
 
-/* By default, the error handling mode used is CONNECT_ON_ERROR.
-
-   With FLUSH_OR_CONNECT_ON_ERROR, the library will attempt an immediate
-   reconnection which may hang for several seconds if the network to
-   the remote target unit is down.
-
-   With NOP_ON_ERROR, it is expected that the application will
-   check for network error returns and deal with them as necessary.
-
-   This function is only useful in TCP mode.
+/**
+ * modbus_set_error_handling:
+ * @mb_param:
+ * @error_handling:
+ *
+ * By default, the error handling mode used is CONNECT_ON_ERROR.
+ *
+ * With FLUSH_OR_CONNECT_ON_ERROR, the library will attempt an immediate
+ * reconnection which may hang for several seconds if the network to
+ * the remote target unit is down.
+ *
+ * With NOP_ON_ERROR, it is expected that the application will
+ * check for network error returns and deal with them as necessary.
+ *
+ * This function is only useful in TCP mode.
  */
 void modbus_set_error_handling(modbus_param_t *mb_param, error_handling_t error_handling);
 
-/* Establishes a modbus connexion.
-   Returns 0 on success or -1 on failure. */
+/**
+ * modbus_connect:
+ * @mb_param:
+ *
+ * Establishes a modbus connexion.
+ *
+ * Returns: 0 on success or -1 on failure.
+ */
 int modbus_connect(modbus_param_t *mb_param);
 
-/* Closes a modbus connection */
+/**
+ * modbus_close:
+ * @mb_param:
+ *
+ * Closes a modbus connection.
+ */
 void modbus_close(modbus_param_t *mb_param);
 
-/* Flush the pending request */
+/**
+ * modbus_flush:
+ * @mb_param:
+ *
+ * Flush the pending request.
+ */
 void modbus_flush(modbus_param_t *mb_param);
 
-/* Activates the debug messages */
+/**
+ *modbus_set_debug:
+ * @mb_param:
+ * @boolean:
+ *
+ * Activates the debug messages.
+ */
 void modbus_set_debug(modbus_param_t *mb_param, int boolean);
 
-/**
+/*
  * SLAVE/CLIENT FUNCTIONS
  **/
 
-/* Allocates 4 arrays to store coils, input status, input registers and
-   holding registers. The pointers are stored in modbus_mapping structure.
-
-   Returns 0 on success and -1 on failure
+/**
+ * modbus_mapping_new:
+ * @mb_mapping:
+ * @nb_coil_status:
+ * @nb_input_status:
+ * @nb_holding_registers:
+ * @nb_input_registers:
+ *
+ * Allocates 4 arrays to store coils, input status, input registers and
+ * holding registers. The pointers are stored in modbus_mapping structure.
+ *
+ * Returns: 0 on success and -1 on failure
  */
 int modbus_mapping_new(modbus_mapping_t *mb_mapping,
                        int nb_coil_status, int nb_input_status,
                        int nb_holding_registers, int nb_input_registers);
 
-/* Frees the 4 arrays */
+/**
+ * modbus_mapping_free:
+ * @mb_mapping:
+ *
+ Frees the 4 arrays.
+ */
 void modbus_mapping_free(modbus_mapping_t *mb_mapping);
 
-/* Listens for any query from one or many modbus masters in TCP.
-
-   Returns: socket
+/**
+ * modbus_slave_listen_tcp:
+ * @mb_param:
+ * @nb_connection:
+ *
+ * Listens for any query from one or many modbus masters in TCP.
+ *
+ * Returns: socket
  */
 int modbus_slave_listen_tcp(modbus_param_t *mb_param, int nb_connection);
 
-/* Waits for a connection */
+/**
+ * modbus_slave_accept_tcp:
+ * @mb_param:
+ * @socket:
+ *
+ * Waits for a connection.
+ *
+ * Returns:
+ */
 int modbus_slave_accept_tcp(modbus_param_t *mb_param, int *socket);
 
-/* Listens for any query from a modbus master in TCP, requires the socket file
-   descriptor etablished with the master device in argument or -1 to use the
-   internal one of modbus_param_t.
-
-   Returns:
-   - byte length of the message on success, or a negative error number if the
-     request fails
-   - query, message received
-*/
+/**
+ * modbus_slave_receive:
+ * @mb_param:
+ * @sockfd:
+ * @query:
+ *
+ * Listens for any query from a modbus master in TCP, requires the socket file
+ * descriptor etablished with the master device in argument or -1 to use the
+ * internal one of modbus_param_t.
+ *
+ * Returns:
+ * - byte length of the message on success, or a negative error number if the
+ *   request fails
+ * - query, message received
+ */
 int modbus_slave_receive(modbus_param_t *mb_param, int sockfd, uint8_t *query);
 
-/* Manages the received query.
-   Analyses the query and constructs a response.
-
-   If an error occurs, this function construct the response
-   accordingly.
-*/
+/**
+ * modbus_slave_manage:
+ * @mb_param:
+ * @query:
+ * @query_length:
+ * @mb_mapping:
+ *
+ * Manages the received query.
+ * Analyses the query and constructs a response.
+ *
+ *  If an error occurs, this function construct the response
+ *  accordingly.
+ */
 void modbus_slave_manage(modbus_param_t *mb_param, const uint8_t *query,
                          int query_length, modbus_mapping_t *mb_mapping);
 
-/* Closes a TCP socket */
+/**
+ * modbus_slave_close_tcp:
+ * @socket:
+ *
+ * Closes a TCP socket.
+ *
+ */
 void modbus_slave_close_tcp(int socket);
 
-/**
+/*
  * UTILS FUNCTIONS
  **/
 
-/* Sets many input/coil status from a single byte value (all 8 bits of
-   the byte value are set) */
+/**
+ * set_bits_from_byte:
+ * @dest:
+ * @address:
+ * @value:
+ *
+ * Sets many input/coil status from a single byte value (all 8 bits of
+ * the byte value are set).
+ *
+ */
 void set_bits_from_byte(uint8_t *dest, int address, const uint8_t value);
 
-/* Sets many input/coil status from a table of bytes (only the bits
-   between address and address + nb_bits are set) */
+/**
+ * set_bits_from_bytes:
+ * @dest:
+ * @address:
+ * @nb_bits:
+ * @tab_byte:
+ *
+ * Sets many input/coil status from a table of bytes (only the bits
+ * between address and address + nb_bits are set).
+ *
+ */
 void set_bits_from_bytes(uint8_t *dest, int address, int nb_bits,
                          const uint8_t *tab_byte);
 
-/* Gets the byte value from many input/coil status.
-   To obtain a full byte, set nb_bits to 8. */
+/**
+ * get_byte_from_bits:
+ * @src:
+ * @nb_bits:
+ *
+ * Gets the byte value from many input/coil status.
+ * To obtain a full byte, set nb_bits to 8.
+ *
+ * Returns:
+ */
 uint8_t get_byte_from_bits(const uint8_t *src, int address, int nb_bits);
 
-/* Read a float from 4 bytes in Modbus format */
+/**
+ * modbus_read_float:
+ * @src:
+ *
+ * Read a float from 4 bytes in Modbus format.
+ *
+ * Returns:
+ */
 float modbus_read_float(const uint16_t *src);
 
-/* Write a float to 4 bytes in Modbus format */
+/**
+ * modbus_write_float:
+ * @real:
+ * @dest:
+ *
+ * Write a float to 4 bytes in Modbus format.
+ *
+ * Returns:
+ */
 void modbus_write_float(float real, uint16_t *dest);
 
 #ifdef __cplusplus
