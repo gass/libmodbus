@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
           "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-<!ENTITY MB_VERSION SYSTEM "libmodbus-version.xml">
+<!ENTITY MB_VERSION SYSTEM "libmodbus-version-string.xml">
 ]>
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
@@ -17,53 +17,34 @@
     </copyright>
   </bookinfo>
 
-  <preface id="introduction">
+  <chapter>
+
     <title>Introduction</title>
     <para>
-Introduction Text here.
+LibModbus is a free software library to send/receive data with a
+device which respects the Modbus protocol. This library can use a
+serial port or an Ethernet connection.
+</para>
+<para>
+The functions included in the library have been derived from the
+<emphasis>Modicon Modbus Protocol Reference Guide</emphasis> which can be obtained from
+<ulink type="http" url="www.schneiderautomation.com">Schneider Automation</ulink>.
+</para>
+<para>
+The license of libmodbus is LGPL v3.
+</para><para>
+The licence of programs in the tests directory is GPL v3.
     </para>
-    <para>
-LibModbus depends on the following libraries:
-      <variablelist>
-        <varlistentry>
-          <term>
-<ulink type="http" url="http://www.gtk.org">GLib</ulink>
-          </term>
-          <listitem>
-            <para>
-A general-purpose utility library, not specific to graphical user
-interfaces. GLib provides many useful data types, macros, type
-conversions, string utilities, file utilities, a main loop
-abstraction, and so on.
-            </para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-    </para>
-  </preface>
+  </chapter>
+<chapter>
+<title>API Reference</title>
 
-  <part id="modbus-overview">
-    <title>LibModbus Overview</title>
-    <partintro id="overview-intro">
-How to use and develop LibModbus applications.
-    </partintro>
-  </part>
+    <para>LibModbus provides an api to comunicate with modbus enabled equipments and an utility api for version checking. </para>
 
-  <part id="libmodbus">
-    <title>LibModbus Core Reference</title>
-    <partintro id="core-intro">
-      <para>
-The LibModbus core library reference.
-      </para>
-    </partintro>
-    <xi:include href="xml/modbus.xml"/>
-  </part>
 
- <index id="libmodbus-hierarchy">
-    <title>Object Hierarchy</title>
-    <xi:include href="xml/tree_index.sgml"/>
-  </index>
-
+<xi:include href="xml/modbus.xml"/>
+<xi:include href="xml/version.xml"/>
+</chapter>
   <index id="api-index">
     <title>Index</title>
   </index>

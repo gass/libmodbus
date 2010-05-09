@@ -2,7 +2,7 @@ html
 xml
 tmpl
 *.stamp
-libmodbus-version.xml
+libmodbus-version-string.xml
 libmodbus-*.txt
 libmodbus.args
 libmodbus.hierarchy

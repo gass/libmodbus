@@ -14,6 +14,20 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+/**
+ * SECTION:modbus
+ * @short_description: library's symbols reference
+ * @title: LibModbus API - Reference
+ * @section_id:
+ * @see_also:
+ * @stability: Stable
+ * @include: modbus.h
+ * @Image:
+ *
+ * The application class handles ...
+ */
+
 
 #ifndef _MODBUS_H_
 #define _MODBUS_H_

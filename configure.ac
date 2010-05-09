@@ -83,7 +83,7 @@ AC_CONFIG_FILES([
         modbus/version.h
         tests/Makefile
         doc/Makefile
-        doc/libmodbus-version.xml
+        doc/libmodbus-version-string.xml
         libmodbus.pc
 ])
 
