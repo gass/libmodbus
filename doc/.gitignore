@@ -1,6 +1,12 @@
-doc
+html
 xml
 tmpl
 *.stamp
 libmodbus-version.xml
 libmodbus-*.txt
+libmodbus.args
+libmodbus.hierarchy
+libmodbus.interfaces
+libmodbus.prerequisites
+libmodbus.signals
+libmodbus.types
