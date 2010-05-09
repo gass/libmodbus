@@ -221,12 +221,32 @@ typedef struct {
    - less than 0 for exceptions errors
 */
 
-/* Reads the boolean status of coils and sets the array elements in
-   the destination to TRUE or FALSE */
+/**
+ * read_coil_status:
+ * @mb_param: The connection parameters #modbus_param_t
+ * @start_addr: the start address to be read
+ * @nb: number of bytes to read
+ * @dest: destination array
+ *
+ * Reads the boolean status of coils and sets the array elements in
+ * the destination to TRUE or FALSE.
+ *
+ * Returns: The number of bits or words if success (>0) or an error exception (<0).
+ */
 int read_coil_status(modbus_param_t *mb_param, int start_addr, int nb,
                      uint8_t *dest);
 
-/* Same as read_coil_status but reads the slaves input table */
+/**
+ * read_input_status:
+ * @mb_param: The connection parameters #modbus_param_t
+ * @start_addr: the start address to be read
+ * @nb: number of bytes to read
+ * @dest: destination array
+ *
+ *  Same as read_coil_status but reads the slaves input table.
+ *
+ * Returns: The number of bits or words if success (>0) or an error exception (<0).
+ */
 int read_input_status(modbus_param_t *mb_param, int start_addr, int nb,
                       uint8_t *dest);
 
@@ -245,35 +265,89 @@ int read_input_status(modbus_param_t *mb_param, int start_addr, int nb,
 int read_holding_registers(modbus_param_t *mb_param, int start_addr, int nb,
                            uint16_t *dest);
 
-/* Reads the input registers in a slave and put the data into an
-   array */
+/**
+ * read_input_registers:
+ * @mb_param: The connection parameters #modbus_param_t
+ * @start_addr: the start address to be read
+ * @nb: number of bytes to read
+ * @dest: destination array
+ *
+ * Reads the input registers in a slave and put the data into an
+ * array.
+ *
+ * Returns: The number of bits or words if success (>0) or an error exception (<0).
+ */
 int read_input_registers(modbus_param_t *mb_param, int start_addr, int nb,
                          uint16_t *dest);
 
-/* Turns ON or OFF a single coil in the slave device */
+/**
+ * force_single_coil:
+ * @mb_param: The connection parameters #modbus_param_t
+ * @coil_addr:
+ * @state:
+ *
+ * Turns ON or OFF a single coil in the slave device
+ *
+ * Returns: The number of bits or words if success (>0) or an error exception (<0).
+ */
 int force_single_coil(modbus_param_t *mb_param, int coil_addr, int state);
 
-/* Sets a value in one holding register in the slave device */
+/**
+ * preset_single_register:
+ * @mb_param: The connection parameters #modbus_param_t
+ *
+ * Sets a value in one holding register in the slave device.
+ *
+ * Returns: The number of bits or words if success (>0) or an error exception (<0).
+ */
 int preset_single_register(modbus_param_t *mb_param, int reg_addr, int value);
 
-/* Sets/resets the coils in the slave from an array in argument */
+/**
+ * force_multiple_coils:
+ * @mb_param: The connection parameters #modbus_param_t
+ *
+ * Sets/resets the coils in the slave from an array in argument.
+ *
+ * Returns: The number of bits or words if success (>0) or an error exception (<0).
+ */
 int force_multiple_coils(modbus_param_t *mb_param, int start_addr, int nb,
                          const uint8_t *data);
 
-/* Copies the values in the slave from the array given in argument */
+/**
+ * preset_multiple_registers:
+ * @mb_param: The connection parameters #modbus_param_t
+ *
+ * Copies the values in the slave from the array given in argument.
+ *
+ * Returns: The number of bits or words if success (>0) or an error exception (<0).
+ */
 int preset_multiple_registers(modbus_param_t *mb_param, int start_addr, int nb,
                               const uint16_t *data);
 
-/* Returns the slave id! */
+/**
+ * report_slave_id:
+ * @mb_param: The connection parameters #modbus_param_t
+ *
+ * Returns the slave id!.
+ *
+ * Returns: The slave id!
+ */
 int report_slave_id(modbus_param_t *mb_param, uint8_t *dest);
 
-/* Initializes the modbus_param_t structure for RTU.
-   - device: "/dev/ttyS0"
-   - baud:   9600, 19200, 57600, 115200, etc
-   - parity: "even", "odd" or "none"
-   - data_bits: 5, 6, 7, 8
-   - stop_bits: 1, 2
-*/
+/**
+ * modbus_init_rtu:
+ * @device: The device to be used for comunication.
+ * Example: "/dev/ttyS0"
+ * @baud: The communication's BaudRate: 9600, 19200, 57600, 115200, etc.
+ * @parity: The parity definition: "even", "odd" or "none".
+ * @data_bits: Comunication databits: 5, 6, 7, 8.
+ * @stop_bits: Number of stop bits: 1, 2.
+ *
+ * Initializes the #modbus_param_t structure for RTU.
+ *
+ * Returns: The number of bits or words if success (>0) or an error exception (<0).
+ */
+
 void modbus_init_rtu(modbus_param_t *mb_param, const char *device,
                      int baud, const char *parity, int data_bit,
                      int stop_bit, int slave);
@@ -285,7 +359,7 @@ void modbus_init_rtu(modbus_param_t *mb_param, const char *device,
  * @port:
  * @slave:
  *
- *Initializes the modbus_param_t structure for TCP.
+ *Initializes the #modbus_param_t structure for TCP.
  * - ip: "192.168.0.5"
  * - port: 1099
  * - slave: 5
