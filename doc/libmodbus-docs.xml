@@ -1,21 +1,70 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
-                      "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
-<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
-  <xi:include href="bookinfo.xml"/>
+          "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY MB_VERSION SYSTEM "libmodbus-version.xml">
+]>
 
-  <part id="Modbus">
-    <title>Libmodbus Functions</title>
-      <xi:include href="xml/tag.xml"/>
-      <xi:include href="xml/tag_bool.xml"/>
-      <xi:include href="xml/tag_int.xml"/>
-      <xi:include href="xml/dbpc_list.xml"/>
-      <xi:include href="xml/debug.xml"/>
-      <xi:include href="xml/dbpc_string.xml"/>
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>LibModbus &MB_VERSION; Reference Manual</title>
+    <releaseinfo>
+      for LibModbus &MB_VERSION;
+    </releaseinfo>
+    <copyright>
+      <year>2010</year>
+      <holder>Some People
+      </holder>
+    </copyright>
+  </bookinfo>
+
+  <preface id="introduction">
+    <title>Introduction</title>
+    <para>
+Introduction Text here.
+    </para>
+    <para>
+LibModbus depends on the following libraries:
+      <variablelist>
+        <varlistentry>
+          <term>
+<ulink type="http" url="http://www.gtk.org">GLib</ulink>
+          </term>
+          <listitem>
+            <para>
+A general-purpose utility library, not specific to graphical user
+interfaces. GLib provides many useful data types, macros, type
+conversions, string utilities, file utilities, a main loop
+abstraction, and so on.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </para>
+  </preface>
+
+  <part id="modbus-overview">
+    <title>LibModbus Overview</title>
+    <partintro id="overview-intro">
+How to use and develop LibModbus applications.
+    </partintro>
   </part>
 
-  <index id="Index">
-    <title>Index</title>
+  <part id="libmodbus">
+    <title>LibModbus Core Reference</title>
+    <partintro id="core-intro">
+      <para>
+The LibModbus core library reference.
+      </para>
+    </partintro>
+    <xi:include href="xml/modbus.xml"/>
+  </part>
+
+ <index id="libmodbus-hierarchy">
+    <title>Object Hierarchy</title>
+    <xi:include href="xml/tree_index.sgml"/>
   </index>
 
+  <index id="api-index">
+    <title>Index</title>
+  </index>
 </book>

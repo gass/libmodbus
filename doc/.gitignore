@@ -1,0 +1,6 @@
+doc
+xml
+tmpl
+*.stamp
+libmodbus-version.xml
+libmodbus-*.txt
