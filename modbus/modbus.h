@@ -165,42 +165,49 @@ extern "C" {
 typedef enum { RTU=0, TCP } type_com_t;
 typedef enum { FLUSH_OR_CONNECT_ON_ERROR, NOP_ON_ERROR } error_handling_t;
 
-/* This structure is byte-aligned */
+/**
+ * modbus_param_t:
+ * @slave: Slave address.
+ * @fd: Descriptor (tty or socket).
+ * @type_com: The communication mode: RTU or TCP.
+ * @debug: Debug flag.
+ * @port: The TCP port to use.
+ * @device: "/dev/ttyS0", "/dev/ttyUSB0" or "/dev/tty.USA19*"
+ *         on Mac OS X for KeySpan USB<->Serial adapters this string
+ *         had to be made bigger on OS X as the directory+file name
+ *         was bigger than 19 bytes. Making it 67 bytes for now, but
+ *         OS X does support 256 byte file names. May become a problem
+ *         in the future.
+ * @baud: BaudRate :Bauds: 9600, 19200, 57600, 115200, etc.
+ * @data_bit: Data bit.
+ * @stop_bit: Stop bit.
+ * @parity: Parity: "even", "odd", "none".
+ * @error_handling: In error_treat with TCP, do a reconnect or just dump the error.
+ * @ip: IP Address.
+ * @old_tios: Save old termios settings. 
+ *
+ * The communication definition data structure.
+ * This structure is byte-aligned.
+ */
+
 typedef struct {
-        /* Slave address */
+        /*< public >*/
         int slave;
-        /* Descriptor (tty or socket) */
         int fd;
-        /* Communication mode: RTU or TCP */
         type_com_t type_com;
-        /* Flag debug */
         int debug;
-        /* TCP port */
         int port;
-        /* Device: "/dev/ttyS0", "/dev/ttyUSB0" or "/dev/tty.USA19*"
-           on Mac OS X for KeySpan USB<->Serial adapters this string
-           had to be made bigger on OS X as the directory+file name
-           was bigger than 19 bytes. Making it 67 bytes for now, but
-           OS X does support 256 byte file names. May become a problem
-           in the future. */
 #ifdef __APPLE_CC__
         char device[64];
 #else
         char device[16];
 #endif
-        /* Bauds: 9600, 19200, 57600, 115200, etc */
         int baud;
-        /* Data bit */
         uint8_t data_bit;
-        /* Stop bit */
         uint8_t stop_bit;
-        /* Parity: "even", "odd", "none" */
         char parity[5];
-        /* In error_treat with TCP, do a reconnect or just dump the error */
         uint8_t error_handling;
-        /* IP address */
         char ip[16];
-        /* Save old termios settings */
         struct termios old_tios;
 } modbus_param_t;
 
@@ -336,6 +343,7 @@ int report_slave_id(modbus_param_t *mb_param, uint8_t *dest);
 
 /**
  * modbus_init_rtu:
+ * @mb_param: The connection parameters #modbus_param_t
  * @device: The device to be used for comunication.
  * Example: "/dev/ttyS0"
  * @baud: The communication's BaudRate: 9600, 19200, 57600, 115200, etc.
@@ -354,7 +362,7 @@ void modbus_init_rtu(modbus_param_t *mb_param, const char *device,
 
 /**
  * modbus_init_tcp:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  * @ip_address:
  * @port:
  * @slave:
@@ -374,7 +382,7 @@ void modbus_init_tcp(modbus_param_t *mb_param, const char *ip_address, int port,
 
 /**
  * modbus_set_slave:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  * @slave: The slave address.
  *
  * Define the slave number.
@@ -384,7 +392,7 @@ void modbus_set_slave(modbus_param_t *mb_param, int slave);
 
 /**
  * modbus_set_error_handling:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  * @error_handling:
  *
  * By default, the error handling mode used is CONNECT_ON_ERROR.
@@ -402,7 +410,7 @@ void modbus_set_error_handling(modbus_param_t *mb_param, error_handling_t error_
 
 /**
  * modbus_connect:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  *
  * Establishes a modbus connexion.
  *
@@ -412,7 +420,7 @@ int modbus_connect(modbus_param_t *mb_param);
 
 /**
  * modbus_close:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  *
  * Closes a modbus connection.
  */
@@ -420,7 +428,7 @@ void modbus_close(modbus_param_t *mb_param);
 
 /**
  * modbus_flush:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  *
  * Flush the pending request.
  */
@@ -428,7 +436,7 @@ void modbus_flush(modbus_param_t *mb_param);
 
 /**
  *modbus_set_debug:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  * @boolean:
  *
  * Activates the debug messages.
@@ -466,7 +474,7 @@ void modbus_mapping_free(modbus_mapping_t *mb_mapping);
 
 /**
  * modbus_slave_listen_tcp:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  * @nb_connection:
  *
  * Listens for any query from one or many modbus masters in TCP.
@@ -477,7 +485,7 @@ int modbus_slave_listen_tcp(modbus_param_t *mb_param, int nb_connection);
 
 /**
  * modbus_slave_accept_tcp:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  * @socket:
  *
  * Waits for a connection.
@@ -488,7 +496,7 @@ int modbus_slave_accept_tcp(modbus_param_t *mb_param, int *socket);
 
 /**
  * modbus_slave_receive:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  * @sockfd:
  * @query:
  *
@@ -505,7 +513,7 @@ int modbus_slave_receive(modbus_param_t *mb_param, int sockfd, uint8_t *query);
 
 /**
  * modbus_slave_manage:
- * @mb_param:
+ * @mb_param: The connection parameters #modbus_param_t
  * @query:
  * @query_length:
  * @mb_mapping:
