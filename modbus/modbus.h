@@ -123,15 +123,96 @@ extern "C" {
 #endif
 
 /* Function codes */
-#define FC_READ_COIL_STATUS          0x01  /* discretes inputs */
+/**
+ * FC_READ_COIL_STATUS:
+ *
+ * Reads the ON/OFF status of discrete outputs (0X references, coils) in the slave.
+ * Broadcast is not supported.
+ */
+#define FC_READ_COIL_STATUS          0x01
+/**
+ * FC_READ_INPUT_STATUS:
+ *
+ * Reads the ON/OFF status of discrete inputs (1X references) in the slave.
+ * Broadcast is not supported.
+ */
 #define FC_READ_INPUT_STATUS         0x02  /* discretes outputs */
+/**
+ * FC_READ_HOLDING_REGISTERS:
+ *
+ * Reads the binary contents of holding registers (4X references) in the slave.
+ * Broadcast is not supported.
+ */
 #define FC_READ_HOLDING_REGISTERS    0x03
+/**
+ * FC_READ_INPUT_REGISTERS:
+ *
+ *Reads the binary contents of input registers (3X references) in the slave.
+ * Broadcast is not supported.
+
+ */
 #define FC_READ_INPUT_REGISTERS      0x04
+/**
+ * FC_FORCE_SINGLE_COIL:
+ *
+ * Forces a single coil (0X reference) to either ON or OFF. When broadcast, the
+ * function forces the same coil reference in all attached slaves.
+ * <note> The function will override the controller’s memory protect state
+ * and the coil’s disable state. The forced state will remain valid until the
+ * controller’s logic next solves the coil. The coil will remain forced if it is
+ * not programmed in the controller’s logic. </note>
+ */
 #define FC_FORCE_SINGLE_COIL         0x05
+/**
+ * FC_PRESET_SINGLE_REGISTER:
+ *
+ * Presets a value into a single holding register (4X reference). When broadcast, the
+ * function presets the same register reference in all attached slaves.
+ * <note> The function will override the controller’s memory protect state.
+ * The preset value will remain valid in the register until the controller’s
+ * logic next solves the register contents. The register’s value will remain
+ * if it is not programmed in the controller’s logic.</note>
+ */
 #define FC_PRESET_SINGLE_REGISTER    0x06
+/**
+ * FC_READ_EXCEPTION_STATUS:
+ *
+ * Reads the contents of eight Exception Status coils within the slave controller.
+ * Certain coils have predefined assignments in the various controllers. Other coils
+ * can be programmed by the user to hold information about the contoller’s status,
+ * for example, ‘machine ON/OFF’, ‘heads retracted’, ‘safeties satisfied’, ‘error
+ * conditions exist’, or other user–defined flags. Broadcast is not supported.
+ */
 #define FC_READ_EXCEPTION_STATUS     0x07
+/**
+ * FC_FORCE_MULTIPLE_COILS:
+ *
+ * Forces each coil (0X reference) in a sequence of coils to either ON or OFF. When
+ * broadcast, the function forces the same coil references in all attached slaves.
+ * <note> The function will override the controller’s memory protect state
+ * and a coil’s disable state. The forced state will remain valid until the
+ * controller’s logic next solves each coil. Coils will remain forced if they
+ * are not programmed in the controller’s logic.</note>
+ */
 #define FC_FORCE_MULTIPLE_COILS      0x0F
+/**
+ * FC_PRESET_MULTIPLE_REGISTERS:
+ * 
+ * Presets values into a sequence of holding registers (4X references). When
+ * broadcast, the function presets the same register references in all attached slaves.
+ * <note> The function will override the controller’s memory protect state.
+ * The preset values will remain valid in the registers until the controller’s
+ * logic next solves the register contents. The register values will remain
+ * if they are not programmed in the controller’s logic.</note>
+ */
 #define FC_PRESET_MULTIPLE_REGISTERS 0x10
+/**
+ * FC_REPORT_SLAVE_ID:
+ *
+ * Returns a description of the type of controller present at the slave address, the
+ * current status of the slave Run indicator, and other information specific to the
+ * slave device. Broadcast is not supported.
+ */
 #define FC_REPORT_SLAVE_ID           0x11
 
 /* Protocol exceptions */
@@ -348,12 +429,10 @@ int report_slave_id(modbus_param_t *mb_param, uint8_t *dest);
  * Example: "/dev/ttyS0"
  * @baud: The communication's BaudRate: 9600, 19200, 57600, 115200, etc.
  * @parity: The parity definition: "even", "odd" or "none".
- * @data_bits: Comunication databits: 5, 6, 7, 8.
- * @stop_bits: Number of stop bits: 1, 2.
+ * @data_bit: Comunication databits: 5, 6, 7, 8.
+ * @stop_bit: Number of stop bits: 1, 2.
  *
  * Initializes the #modbus_param_t structure for RTU.
- *
- * Returns: The number of bits or words if success (>0) or an error exception (<0).
  */
 
 void modbus_init_rtu(modbus_param_t *mb_param, const char *device,
@@ -529,7 +608,7 @@ void modbus_slave_manage(modbus_param_t *mb_param, const uint8_t *query,
 
 /**
  * modbus_slave_close_tcp:
- * @socket:
+ * @socket: Socket fd.
  *
  * Closes a TCP socket.
  *
@@ -584,7 +663,7 @@ uint8_t get_byte_from_bits(const uint8_t *src, int address, int nb_bits);
  *
  * Read a float from 4 bytes in Modbus format.
  *
- * Returns:
+ * Returns: the value read.
  */
 float modbus_read_float(const uint16_t *src);
 
@@ -594,8 +673,6 @@ float modbus_read_float(const uint16_t *src);
  * @dest:
  *
  * Write a float to 4 bytes in Modbus format.
- *
- * Returns:
  */
 void modbus_write_float(float real, uint16_t *dest);
 
