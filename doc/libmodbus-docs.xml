@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <xi:include href="bookinfo.xml"/>
+
+  <part id="Modbus">
+    <title>Libmodbus Functions</title>
+      <xi:include href="xml/tag.xml"/>
+      <xi:include href="xml/tag_bool.xml"/>
+      <xi:include href="xml/tag_int.xml"/>
+      <xi:include href="xml/dbpc_list.xml"/>
+      <xi:include href="xml/debug.xml"/>
+      <xi:include href="xml/dbpc_string.xml"/>
+  </part>
+
+  <index id="Index">
+    <title>Index</title>
+  </index>
+
+</book>

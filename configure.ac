@@ -25,6 +25,8 @@ AC_PREREQ(2.63)
 AC_INIT([libmodbus],[mb_version],[stephane.raimbault@gmail.com])
 AC_CONFIG_SRCDIR([modbus/modbus.c])
 AC_CONFIG_HEADERS([config.h])
+# check for gtk-doc
+GTK_DOC_CHECK(1.0)
 AM_INIT_AUTOMAKE([foreign])
 # enable nice build output on automake1.11
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
@@ -64,6 +66,8 @@ AC_HEADER_TIME
 # AC_TYPE_UINT32_T
 # AC_TYPE_UINT8_T
 
+
+
 # Cygwin defines IPTOS_LOWDELAY but can't handle that flag so it's necessary to
 # workaround that problem and Cygwin doesn't define MSG_DONTWAIT.
 AC_CHECK_DECLS([__CYGWIN__])
@@ -72,11 +76,15 @@ AC_CHECK_DECLS([__CYGWIN__])
 AC_FUNC_FORK
 AC_CHECK_FUNCS([gettimeofday inet_ntoa memset select socket strerror])
 
+
 AC_CONFIG_FILES([
         Makefile
         modbus/Makefile
         modbus/version.h
         tests/Makefile
+        doc/Makefile
         libmodbus.pc
 ])
+
+
 AC_OUTPUT
