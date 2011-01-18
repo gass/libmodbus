@@ -43,7 +43,9 @@ The licence of programs in the tests directory is GPL v3.
 
 
 <xi:include href="xml/modbus.xml"/>
-<xi:include href="xml/version.xml"/>
+<xi:include href="xml/modbus-rtu.xml"/>
+<xi:include href="xml/modbus-tcp.xml"/>
+<xi:include href="xml/modbus-version.xml"/>
 </chapter>
   <index id="api-index">
     <title>Index</title>
