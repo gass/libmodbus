@@ -16,16 +16,21 @@
  */
 
 #include <stdio.h>
-#include <modbus/modbus.h>
+#include <modbus.h>
 
 int main(void)
 {
-        printf("Compiled with libmodbus version %s\n", MB_VERSION_STRING);
-        printf("Linked with libmodbus version %d.%d.%d\n",
-               mb_version_major, mb_version_minor, mb_version_micro);
+    printf("Compiled with libmodbus version %s\n", LIBMODBUS_VERSION_STRING);
+    printf("Linked with libmodbus version %d.%d.%d\n",
+           libmodbus_version_major, libmodbus_version_minor, libmodbus_version_micro);
 
-        if (MB_VERSION_CHECK(2, 1, 0)) {
-                printf("The functions to read/write float values are available.\n");
-        }
-        return 0;
+    if (LIBMODBUS_VERSION_CHECK(2, 1, 0)) {
+        printf("The functions to read/write float values are available (2.1.0).\n");
+    }
+
+    if (LIBMODBUS_VERSION_CHECK(2, 1, 1)) {
+        printf("Oh gosh, brand new API (2.1.1)!\n");
+    }
+
+    return 0;
 }
